@@ -18,9 +18,10 @@ public:
      * @param socket
      * @param sessions
      */
-    explicit WebSocketSession(tcp::socket socket, std::vector<std::shared_ptr<WebSocketSession>>& sessions)
+    explicit WebSocketSession(tcp::socket socket, std::vector<std::shared_ptr<WebSocketSession>>& sessions, int& roomId)
             : socket_(std::move(socket)),
-              sessions_(sessions)
+              sessions_(sessions),
+              roomId_(roomId)
     {
     }
 
@@ -53,6 +54,10 @@ public:
         }
     }
 
+    const int& getRoomId()const{
+        return roomId_;
+    }
+
 private:
 
     /**
@@ -75,9 +80,9 @@ private:
      * @brief 자신을 제외한 연결된 모든 Client 에게 Broadcast.
      * @param message
      */
-    void broadcast(const std::string& message) {
+    void broadcast(const std::string& message, const int& roomId) {
         for (const auto& session : sessions_) {
-            if (session != shared_from_this()) {
+            if (session != shared_from_this() && session->getRoomId() == roomId) {
                 session->send(message);
             }
         }
@@ -86,6 +91,7 @@ private:
     boost::optional<websocket> websocket_;
     tcp::socket socket_;
     beast::flat_buffer buffer_;
+    int roomId_;
     std::vector<std::shared_ptr<WebSocketSession>>& sessions_;
 };
 

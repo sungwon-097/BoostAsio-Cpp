@@ -16,5 +16,5 @@ find_package(Boost REQUIRED COMPONENTS regex REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIR})
 
-add_executable(ChatServer webSocketServer.cpp)
+add_executable(ChatServer server/webSocketServer.cpp)
 target_link_libraries( ChatServer ${Boost_LIBRARIES} )

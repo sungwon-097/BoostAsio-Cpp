@@ -126,4 +126,4 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/c++,clion+all
 
 boost_1.82_0/
-webSocketServer
+server/webSocketServer
